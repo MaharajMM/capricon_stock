@@ -1,4 +1,5 @@
 import 'package:capricon_stock/core/router/router.dart';
+import 'package:capricon_stock/data/service/login_db/login_db_service_pod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,6 +10,8 @@ final navigatorKey = GlobalKey<NavigatorState>();
 /// This provider used for storing router
 /// and can be acessed by reading it using ProviderRef/WidgetRef
 final autorouterProvider = Provider.autoDispose<AppRouter>(
-  (ref) => AppRouter(),
+  (ref) => AppRouter(
+    loginDbService: ref.watch(loginDbProvider),
+  ),
   name: 'autorouterProvider',
 );
