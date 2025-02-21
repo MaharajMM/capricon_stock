@@ -1,3 +1,4 @@
+import 'package:capricon_stock/const/colors/app_colors.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
@@ -5,8 +6,10 @@ import 'package:flutter/material.dart';
 ///Here we used flex color scheme
 class Themes {
   static ThemeData get theme => FlexThemeData.light(
-        scheme: FlexScheme.brandBlue,
+        scheme: FlexScheme.orangeM3,
         surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+        primary: AppColors.orange500,
+        scaffoldBackground: AppColors.appWhite,
         blendLevel: 20,
         appBarOpacity: 0.95,
         swapColors: true,
