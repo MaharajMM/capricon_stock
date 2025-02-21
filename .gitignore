@@ -31,6 +31,13 @@ migrate_working_dir/
 .pub/
 /build/
 
+#ios pod lock file
+ios/Podfile.lock
+
+#exclude all .env files from source control
+*.env
+*env.g.dart
+
 # Symbolication related
 app.*.symbols
 

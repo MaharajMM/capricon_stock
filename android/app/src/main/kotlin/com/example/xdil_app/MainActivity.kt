@@ -1,4 +1,4 @@
-package com.example.xdil_app
+package com.example.capricon_stock
 
 import io.flutter.embedding.android.FlutterActivity
 

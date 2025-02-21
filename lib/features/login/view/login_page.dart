@@ -1,14 +1,18 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:capricon_stock/const/colors/app_colors.dart';
 import 'package:capricon_stock/const/resource.dart';
+import 'package:capricon_stock/core/router/router.gr.dart';
 import 'package:capricon_stock/features/login/const/login_keys.dart';
+import 'package:capricon_stock/features/login/controller/login_pod.dart';
+import 'package:capricon_stock/features/login/state/login_state.dart';
 import 'package:capricon_stock/features/login/view/widgets/login_button.dart';
+import 'package:capricon_stock/shared/utilities/utilites.dart';
 import 'package:capricon_stock/shared/widget/custom_text_formfield.dart';
-import 'package:capricon_stock/shared/widget/primary_action_button.dart';
 import 'package:capricon_stock/shared/widget/text/app_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -23,19 +27,47 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-class LoginView extends StatefulWidget {
+class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  ConsumerState<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LoginViewState extends ConsumerState<LoginView> {
   final _loginFormKey = GlobalKey<FormBuilderState>();
-  void login() {}
+  void login() {
+    if (_loginFormKey.currentState?.validate() ?? false) {
+      HapticFeedback.lightImpact();
+      Feedback.forTap(context);
+      final fields = _loginFormKey.currentState!.fields;
+      final username = fields[LoginKeys.userName]!.value as String;
+      final password = fields[LoginKeys.password]!.value as String;
+
+      ref.read(loginProvider.notifier).loginUser(
+            userName: username,
+            passWord: password,
+            onLoginVerified: () {
+              context.showToast(msg: 'Success', bgColor: AppColors.kSuccessColor.withOpacity(0.8));
+              context.router.replaceAll([const HomeRoute()]);
+            },
+          );
+    } else {
+      return Utilities.flushBarErrorMessage(message: "Not validated", context: context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(
+      loginProvider,
+      (previous, next) {
+        if (next.value is NotVerifiedState) {
+          Utilities.flushBarErrorMessage(
+              message: 'Unable to verify at this time. Please try later', context: context);
+        }
+      },
+    );
     return Scaffold(
       backgroundColor: AppColors.appWhite,
       appBar: AppBar(
@@ -80,9 +112,9 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       20.heightBox,
                       CustomTextFormField(
-                        // suffixIcon: _isObscure ? Icons.visibility : Icons.visibility_off,
-                        labelText: 'password',
-                        hintText: 'password',
+                        textInputAction: TextInputAction.done,
+                        labelText: 'Password',
+                        hintText: 'Password',
                         name: LoginKeys.password,
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(errorText: 'PassWord Required'),
@@ -96,27 +128,8 @@ class _LoginViewState extends State<LoginView> {
                     right: 20,
                   ),
                 ),
-
                 20.heightBox,
-                // ========== LOGIN API CALLED =========== //
-                LoginButton(onLogin: login)
-                    .h(MediaQuery.of(context).size.height * 0.05)
-                    .pOnly(left: 24, right: 24),
-                // GlobalButton(buttonText: 'Login', onPressed: login)
-                10.heightBox,
-                AppText(
-                  text: 'OR',
-                  textAlign: TextAlign.center,
-                ),
-                10.heightBox,
-                PrimaryActionButton(
-                  labelText: 'Login with OTP',
-                  fontColor: AppColors.grey400,
-                  onPressed: () {
-                    // context.navigateTo(SigninMobileRoute());
-                  },
-                  color: AppColors.grey500.withOpacity(0.1),
-                ).h(MediaQuery.of(context).size.height * 0.05).pOnly(left: 24, right: 24),
+                LoginButton(onLogin: login).pOnly(left: 24, right: 24),
               ],
             ),
           ),
