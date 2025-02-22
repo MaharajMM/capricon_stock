@@ -1,6 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:capricon_stock/const/colors/app_colors.dart';
-import 'package:capricon_stock/data/model/stock_list_model.dart';
+import 'package:capricon_stock/data/model/stock_model.dart';
 import 'package:capricon_stock/features/home/controller/home_pod.dart';
 import 'package:capricon_stock/features/home/state/stock_state.dart';
 import 'package:capricon_stock/features/home/view/widgets/category_card.dart';

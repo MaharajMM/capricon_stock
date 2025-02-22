@@ -7,5 +7,11 @@ class AppUrls {
 
   static String baseUrl = Env.developmentBaseUrl;
   static String loginUrl = "/api/auth/local";
-  static String searchUrl = "/api/stocks/search";
+  static String stocksUrl = "/api/stocks";
+  static String searchUrl = "$stocksUrl/search";
+
+  static String getStockByIdUrl({required String stockId}) {
+    var sotckUrl = "$stocksUrl/$stockId";
+    return sotckUrl;
+  }
 }

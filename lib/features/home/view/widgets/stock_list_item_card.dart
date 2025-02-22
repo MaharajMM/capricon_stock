@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:capricon_stock/const/colors/app_colors.dart';
-import 'package:capricon_stock/data/model/stock_list_model.dart';
+import 'package:capricon_stock/core/router/router.gr.dart';
+import 'package:capricon_stock/data/model/stock_model.dart';
 import 'package:capricon_stock/features/home/view/widgets/details_item.dart';
 import 'package:capricon_stock/features/home/view/widgets/info_chip.dart';
 import 'package:capricon_stock/shared/widget/cache_image_network_widget.dart';
@@ -34,6 +36,7 @@ class StockListItem extends StatelessWidget {
         child: InkWell(
           onTap: () {
             // Navigate to stock detail page
+            context.navigateTo(StocksDetailsRoute(stockId: stock.id!));
           },
           borderRadius: BorderRadius.circular(16),
           child: Padding(

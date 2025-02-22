@@ -35,6 +35,12 @@ class StockModel {
   final Image? image;
   final dynamic createdBy;
   final UpdatedBy? updatedBy;
+  final double? price;
+  final double? changePercent;
+  final List<dynamic>? holdings;
+  final List<dynamic>? sectorAllocation;
+  final int? sustainableInvestmentHoldingPercentage;
+  final bool? inPortfolio;
 
   StockModel({
     this.id,
@@ -71,6 +77,12 @@ class StockModel {
     this.image,
     this.createdBy,
     this.updatedBy,
+    this.price,
+    this.changePercent,
+    this.holdings,
+    this.sectorAllocation,
+    this.sustainableInvestmentHoldingPercentage,
+    this.inPortfolio,
   });
 
   StockModel copyWith({
@@ -108,6 +120,12 @@ class StockModel {
     Image? image,
     dynamic createdBy,
     UpdatedBy? updatedBy,
+    double? price,
+    double? changePercent,
+    List<dynamic>? holdings,
+    List<dynamic>? sectorAllocation,
+    int? sustainableInvestmentHoldingPercentage,
+    bool? inPortfolio,
   }) =>
       StockModel(
         id: id ?? this.id,
@@ -146,6 +164,13 @@ class StockModel {
         image: image ?? this.image,
         createdBy: createdBy ?? this.createdBy,
         updatedBy: updatedBy ?? this.updatedBy,
+        price: price ?? this.price,
+        changePercent: changePercent ?? this.changePercent,
+        holdings: holdings ?? this.holdings,
+        sectorAllocation: sectorAllocation ?? this.sectorAllocation,
+        sustainableInvestmentHoldingPercentage:
+            sustainableInvestmentHoldingPercentage ?? this.sustainableInvestmentHoldingPercentage,
+        inPortfolio: inPortfolio ?? this.inPortfolio,
       );
 
   factory StockModel.fromJson(String str) => StockModel.fromMap(json.decode(str));
@@ -188,6 +213,15 @@ class StockModel {
         image: json["image"] == null ? null : Image.fromMap(json["image"]),
         createdBy: json["createdBy"],
         updatedBy: json["updatedBy"] == null ? null : UpdatedBy.fromMap(json["updatedBy"]),
+        price: json["price"]?.toDouble(),
+        changePercent: json["change_percent"]?.toDouble(),
+        holdings:
+            json["holdings"] == null ? [] : List<dynamic>.from(json["holdings"]!.map((x) => x)),
+        sectorAllocation: json["sector_allocation"] == null
+            ? []
+            : List<dynamic>.from(json["sector_allocation"]!.map((x) => x)),
+        sustainableInvestmentHoldingPercentage: json["sustainable_investment_holding_percentage"],
+        inPortfolio: json["in_portfolio"],
       );
 
   Map<String, dynamic> toMap() => {
@@ -225,6 +259,13 @@ class StockModel {
         "image": image?.toMap(),
         "createdBy": createdBy,
         "updatedBy": updatedBy?.toMap(),
+        "price": price,
+        "change_percent": changePercent,
+        "holdings": holdings == null ? [] : List<dynamic>.from(holdings!.map((x) => x)),
+        "sector_allocation":
+            sectorAllocation == null ? [] : List<dynamic>.from(sectorAllocation!.map((x) => x)),
+        "sustainable_investment_holding_percentage": sustainableInvestmentHoldingPercentage,
+        "in_portfolio": inPortfolio,
       };
 }
 

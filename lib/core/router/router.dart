@@ -29,5 +29,9 @@ class AppRouter extends RootStackRouter {
       initial: true,
       guards: [SplashGuard(loginDbService: loginDbService)],
     ),
+    AutoRoute(
+      page: StocksDetailsRoute.page,
+      path: '/stock-details',
+    ),
   ];
 }

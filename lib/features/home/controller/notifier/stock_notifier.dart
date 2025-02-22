@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:capricon_stock/data/model/stock_list_model.dart';
+import 'package:capricon_stock/data/model/stock_model.dart';
 import 'package:capricon_stock/data/repository/stock/stock_repository_pod.dart';
 import 'package:capricon_stock/features/home/state/stock_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
