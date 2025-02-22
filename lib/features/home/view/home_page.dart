@@ -1,9 +1,16 @@
 import 'package:auto_route/annotations.dart';
 import 'package:capricon_stock/const/colors/app_colors.dart';
+import 'package:capricon_stock/data/model/stock_list_model.dart';
+import 'package:capricon_stock/features/home/controller/home_pod.dart';
+import 'package:capricon_stock/features/home/state/stock_state.dart';
 import 'package:capricon_stock/features/home/view/widgets/category_card.dart';
 import 'package:capricon_stock/features/home/view/widgets/insight_card.dart';
+import 'package:capricon_stock/shared/utilities/utilites.dart';
 import 'package:capricon_stock/shared/widget/text/app_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 @RoutePage()
@@ -16,19 +23,74 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class HomeView extends StatefulWidget {
+class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  ConsumerState<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends ConsumerState<HomeView> {
   final TextEditingController _searchController = TextEditingController();
-  final List<String> _searchResults = [];
+  final List<StockModel> _searchResults = [];
   final bool _isSearching = false;
+  late BuildContext? loadingStocksdialogContext;
+
+  void _fetchStocks(String query) {
+    HapticFeedback.lightImpact();
+    Feedback.forTap(context);
+    ref.read(searchStockProvider.notifier).searchstock(
+          query: query,
+          onGettingStock: (stockListModel) {
+            if (loadingStocksdialogContext != null) {
+              Navigator.of(loadingStocksdialogContext!).pop();
+            }
+            setState(() {
+              _searchResults.clear();
+              _searchResults.addAll(stockListModel);
+            });
+            context.showToast(msg: 'Success', bgColor: AppColors.kSuccessColor.withOpacity(0.8));
+          },
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
+    ref.listen(
+      searchStockProvider,
+      (previous, next) {
+        if (next.value is SearchingStockState) {
+          showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (context) {
+              loadingStocksdialogContext = context;
+              return PopScope(
+                canPop: true,
+                child: Dialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: SizedBox(
+                    height: 100, // Set height as needed
+                    width: 50, // Set width to 50
+                    child: Center(
+                      child: CircularProgressIndicator.adaptive(
+                        valueColor: AlwaysStoppedAnimation(AppColors.orange500),
+                      ),
+                    ),
+                  ),
+                ).w(50),
+              );
+            },
+          );
+        } else if (next.value is SearchStockErrorState) {
+          Navigator.of(loadingStocksdialogContext!).pop();
+          Utilities.flushBarErrorMessage(
+              message: 'Something wet wrong. Please try late', context: context);
+        }
+      },
+    );
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -74,6 +136,7 @@ class _HomeViewState extends State<HomeView> {
                   controller: _searchController,
                   decoration: InputDecoration(
                     hintText: 'Search stocks by name or symbol...',
+                    hintStyle: GoogleFonts.poppins(color: AppColors.grey600),
                     prefixIcon: Icon(Icons.search, color: AppColors.orange500),
                     suffixIcon: Icon(Icons.tune, color: AppColors.orange500),
                     filled: true,
@@ -91,8 +154,10 @@ class _HomeViewState extends State<HomeView> {
                       borderSide: BorderSide(color: AppColors.orange500, width: 2),
                     ),
                   ),
-                  onChanged: (query) {
-                    // Implement search logic here
+                  onSubmitted: (query) {
+                    if (query.isNotEmpty) {
+                      _fetchStocks(query); // Call API when search button is pressed
+                    }
                   },
                 ),
               ),

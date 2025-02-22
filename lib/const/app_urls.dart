@@ -7,4 +7,5 @@ class AppUrls {
 
   static String baseUrl = Env.developmentBaseUrl;
   static String loginUrl = "/api/auth/local";
+  static String searchUrl = "/api/stocks/search";
 }
