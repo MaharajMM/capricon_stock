@@ -59,4 +59,30 @@ class StockRepository implements IStockRepository {
       return Error(APIException(errorMessage: e.toString()));
     }
   }
+
+  @override
+  Future<Result<Map<String, dynamic>, APIException>> getStockPriceGraphById({
+    required int stockId,
+    required String range,
+  }) async {
+    try {
+      final result = await dio.get(
+        AppUrls.getStockPriceGraphUrl(stockId: stockId.toString()),
+        queryParameters: {'range': range},
+      );
+
+      if (result.statusCode == 200 || result.statusCode == 201) {
+        return Success(Map<String, dynamic>.from(result.data));
+      } else {
+        final errorModel = ErrorModel.fromMap(result.data);
+        return Error(
+          APIException(
+            errorMessage: '${errorModel.error?.message}',
+          ),
+        );
+      }
+    } catch (e) {
+      return Error(APIException(errorMessage: e.toString()));
+    }
+  }
 }

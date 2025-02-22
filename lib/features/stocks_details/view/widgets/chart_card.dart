@@ -1,18 +1,33 @@
 import 'package:capricon_stock/const/colors/app_colors.dart';
+import 'package:capricon_stock/features/stocks_details/controller/stocks_details_pod.dart';
 import 'package:capricon_stock/shared/widget/text/app_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ChartCard extends StatefulWidget {
-  const ChartCard({super.key});
+class ChartCard extends ConsumerStatefulWidget {
+  final int stockId;
+  const ChartCard({
+    super.key,
+    required this.stockId,
+  });
 
   @override
-  State<ChartCard> createState() => _ChartCardState();
+  ConsumerState<ChartCard> createState() => _ChartCardState();
 }
 
-class _ChartCardState extends State<ChartCard> {
+class _ChartCardState extends ConsumerState<ChartCard> {
   String selectedTimeframe = '1D';
   List<String> timeframes = ['1D', '1W', '1M', '1Y', '5Y'];
+
+  void _fetchStockPriceGraph(String range, int stockId) {
+    ref.read(stockPriceGraphProvider.notifier).getStockPriceGraph(
+          range: range,
+          stockId: stockId,
+          onGettingStock: (stockListModel) {},
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,6 +59,7 @@ class _ChartCardState extends State<ChartCard> {
                     setState(() {
                       selectedTimeframe = timeframes[index];
                     });
+                    _fetchStockPriceGraph(selectedTimeframe, widget.stockId);
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: 12),

@@ -9,4 +9,8 @@ abstract class IStockRepository {
   Future<Result<StockModel, APIException>> getStocksById({
     required int stockId,
   });
+  Future<Result<Map<String, dynamic>, APIException>> getStockPriceGraphById({
+    required int stockId,
+    required String range,
+  });
 }

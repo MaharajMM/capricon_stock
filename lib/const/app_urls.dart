@@ -14,4 +14,9 @@ class AppUrls {
     var sotckUrl = "$stocksUrl/$stockId";
     return sotckUrl;
   }
+
+  static String getStockPriceGraphUrl({required String stockId}) {
+    var sotckUrl = "$stocksUrl/$stockId/price-graph";
+    return sotckUrl;
+  }
 }

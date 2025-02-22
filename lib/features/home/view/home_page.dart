@@ -50,7 +50,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
               _searchResults.clear();
               _searchResults.addAll(stockListModel);
             });
-            context.showToast(msg: 'Success', bgColor: AppColors.kSuccessColor.withOpacity(0.8));
           },
         );
   }

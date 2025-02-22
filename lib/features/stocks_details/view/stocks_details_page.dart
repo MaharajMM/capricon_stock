@@ -78,7 +78,7 @@ class StocksDetailsView extends StatelessWidget {
                       ),
                       SizedBox(height: 20),
                       // Chart Section
-                      ChartCard(),
+                      ChartCard(stockId: stockDetailsModel.id!),
                       SizedBox(height: 20),
                       // Stock Info Cards
                       CompanyDetailsCard(company: stockDetailsModel),
