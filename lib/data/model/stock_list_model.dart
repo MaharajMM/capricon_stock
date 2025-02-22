@@ -29,7 +29,7 @@ class StockModel {
   final int? scope2Emissions;
   final int? scope3Emissions;
   final int? totalEmissions;
-  final DateTime? listingDate;
+  final String? listingDate;
   final String? marketCap;
   final int? ibkrConnectionId;
   final Image? image;
@@ -102,7 +102,7 @@ class StockModel {
     int? scope2Emissions,
     int? scope3Emissions,
     int? totalEmissions,
-    DateTime? listingDate,
+    String? listingDate,
     String? marketCap,
     int? ibkrConnectionId,
     Image? image,
@@ -182,7 +182,7 @@ class StockModel {
         scope2Emissions: json["scope_2_emissions"],
         scope3Emissions: json["scope_3_emissions"],
         totalEmissions: json["total_emissions"],
-        listingDate: json["listing_date"] == null ? null : DateTime.parse(json["listing_date"]),
+        listingDate: json["listing_date"],
         marketCap: json["market_cap"],
         ibkrConnectionId: json["ibkr_connection_id"],
         image: json["image"] == null ? null : Image.fromMap(json["image"]),
@@ -219,8 +219,7 @@ class StockModel {
         "scope_2_emissions": scope2Emissions,
         "scope_3_emissions": scope3Emissions,
         "total_emissions": totalEmissions,
-        "listing_date":
-            "${listingDate!.year.toString().padLeft(4, '0')}-${listingDate!.month.toString().padLeft(2, '0')}-${listingDate!.day.toString().padLeft(2, '0')}",
+        "listing_date": listingDate,
         "market_cap": marketCap,
         "ibkr_connection_id": ibkrConnectionId,
         "image": image?.toMap(),

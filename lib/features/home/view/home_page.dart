@@ -5,6 +5,7 @@ import 'package:capricon_stock/features/home/controller/home_pod.dart';
 import 'package:capricon_stock/features/home/state/stock_state.dart';
 import 'package:capricon_stock/features/home/view/widgets/category_card.dart';
 import 'package:capricon_stock/features/home/view/widgets/insight_card.dart';
+import 'package:capricon_stock/features/home/view/widgets/stock_list_item_card.dart';
 import 'package:capricon_stock/shared/utilities/utilites.dart';
 import 'package:capricon_stock/shared/widget/text/app_text.dart';
 import 'package:flutter/material.dart';
@@ -224,14 +225,16 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 Center(child: CircularProgressIndicator())
               else
                 Expanded(
-                  child: ListView.builder(
+                  child: ListView.separated(
                     itemCount: _searchResults.length,
-                    padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.only(bottom: 20, top: 8),
                     itemBuilder: (context, index) {
+                      final stockItem = _searchResults[index];
                       // Your search results list item widget
-                      return Container(); // Replace with your stock list item
+                      return StockListItem(stock: stockItem); // Replace with your stock list item
                     },
-                  ),
+                    separatorBuilder: (context, index) => 12.heightBox,
+                  ).pOnly(top: 20),
                 ),
             ],
           ),
