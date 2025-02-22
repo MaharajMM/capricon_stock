@@ -74,7 +74,7 @@ class StocksDetailsView extends StatelessWidget {
                         symbol: stockDetailsModel.symbol ?? 'N/A',
                         name: stockDetailsModel.name ?? 'N/A',
                         price: stockDetailsModel.price,
-                        imageUrl: stockDetailsModel.image?.url,
+                        imageUrl: stockDetailsModel.image?.url ?? stockImageUrl,
                       ),
                       SizedBox(height: 20),
                       // Chart Section

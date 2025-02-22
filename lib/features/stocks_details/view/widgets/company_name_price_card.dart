@@ -75,13 +75,16 @@ class CompanyNamePriceCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    AppText(
-                      text: name,
-                      fontSize: 18,
-                      maxlines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w600,
+                    Flexible(
+                      child: AppText(
+                        text: name,
+                        fontSize: 18,
+                        maxlines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
+                    SizedBox(width: 8),
                     Container(
                       padding: EdgeInsets.all(4),
                       decoration: BoxDecoration(

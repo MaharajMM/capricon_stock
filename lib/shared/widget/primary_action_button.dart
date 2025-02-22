@@ -12,7 +12,7 @@ class PrimaryActionButton extends StatelessWidget {
     required this.labelText,
     required this.onPressed,
     this.isLoading = false,
-    this.color = AppColors.kPrimaryButtonColor,
+    this.color = AppColors.orange500,
     this.freeSize = false,
     this.fontSize,
     this.isCTA = false,

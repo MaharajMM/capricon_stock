@@ -36,7 +36,12 @@ class StockListItem extends StatelessWidget {
         child: InkWell(
           onTap: () {
             // Navigate to stock detail page
-            context.navigateTo(StocksDetailsRoute(stockId: stock.id!));
+            context.navigateTo(
+              StocksDetailsRoute(
+                stockId: stock.id!,
+                stockImageUrl: stock.image?.url,
+              ),
+            );
           },
           borderRadius: BorderRadius.circular(16),
           child: Padding(

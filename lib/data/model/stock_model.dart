@@ -17,18 +17,18 @@ class StockModel {
   final String? website;
   final String? address;
   final String? netZeroProgress;
-  final int? carbonIntensityScope3;
-  final int? carbonIntensityScope1And2;
-  final int? carbonIntensityScope1And2And3;
+  final double? carbonIntensityScope3;
+  final double? carbonIntensityScope1And2;
+  final double? carbonIntensityScope1And2And3;
   final String? tempAlignmentScopes1And2;
   final bool? dnshAssessmentPass;
   final bool? goodGovernanceAssessment;
   final bool? contributeToEnvironmentOrSocialObjective;
   final bool? sustainableInvestment;
-  final int? scope1Emissions;
-  final int? scope2Emissions;
-  final int? scope3Emissions;
-  final int? totalEmissions;
+  final double? scope1Emissions;
+  final double? scope2Emissions;
+  final double? scope3Emissions;
+  final double? totalEmissions;
   final String? listingDate;
   final String? marketCap;
   final int? ibkrConnectionId;
@@ -102,18 +102,18 @@ class StockModel {
     String? website,
     String? address,
     String? netZeroProgress,
-    int? carbonIntensityScope3,
-    int? carbonIntensityScope1And2,
-    int? carbonIntensityScope1And2And3,
+    double? carbonIntensityScope3,
+    double? carbonIntensityScope1And2,
+    double? carbonIntensityScope1And2And3,
     String? tempAlignmentScopes1And2,
     bool? dnshAssessmentPass,
     bool? goodGovernanceAssessment,
     bool? contributeToEnvironmentOrSocialObjective,
     bool? sustainableInvestment,
-    int? scope1Emissions,
-    int? scope2Emissions,
-    int? scope3Emissions,
-    int? totalEmissions,
+    double? scope1Emissions,
+    double? scope2Emissions,
+    double? scope3Emissions,
+    double? totalEmissions,
     String? listingDate,
     String? marketCap,
     int? ibkrConnectionId,
@@ -194,19 +194,19 @@ class StockModel {
         website: json["website"],
         address: json["address"],
         netZeroProgress: json["net_zero_progress"],
-        carbonIntensityScope3: json["carbon_intensity_scope_3"],
-        carbonIntensityScope1And2: json["carbon_intensity_scope_1_and_2"],
-        carbonIntensityScope1And2And3: json["carbon_intensity_scope_1_and_2_and_3"],
+        carbonIntensityScope3: json["carbon_intensity_scope_3"]?.toDouble(),
+        carbonIntensityScope1And2: json["carbon_intensity_scope_1_and_2"]?.toDouble(),
+        carbonIntensityScope1And2And3: json["carbon_intensity_scope_1_and_2_and_3"]?.toDouble(),
         tempAlignmentScopes1And2: json["temp_alignment_scopes_1_and_2"],
         dnshAssessmentPass: json["dnsh_assessment_pass"],
         goodGovernanceAssessment: json["good_governance_assessment"],
         contributeToEnvironmentOrSocialObjective:
             json["contribute_to_environment_or_social_objective"],
         sustainableInvestment: json["sustainable_investment"],
-        scope1Emissions: json["scope_1_emissions"],
-        scope2Emissions: json["scope_2_emissions"],
-        scope3Emissions: json["scope_3_emissions"],
-        totalEmissions: json["total_emissions"],
+        scope1Emissions: json["scope_1_emissions"]?.toDouble(),
+        scope2Emissions: json["scope_2_emissions"]?.toDouble(),
+        scope3Emissions: json["scope_3_emissions"]?.toDouble(),
+        totalEmissions: json["total_emissions"]?.toDouble(),
         listingDate: json["listing_date"],
         marketCap: json["market_cap"],
         ibkrConnectionId: json["ibkr_connection_id"],

@@ -34,7 +34,7 @@ class HomeView extends ConsumerStatefulWidget {
 class _HomeViewState extends ConsumerState<HomeView> {
   final TextEditingController _searchController = TextEditingController();
   final List<StockModel> _searchResults = [];
-  final bool _isSearching = false;
+  bool _isSearching = false;
   late BuildContext? loadingStocksdialogContext;
 
   void _fetchStocks(String query) {
@@ -53,6 +53,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
             context.showToast(msg: 'Success', bgColor: AppColors.kSuccessColor.withOpacity(0.8));
           },
         );
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -139,7 +145,18 @@ class _HomeViewState extends ConsumerState<HomeView> {
                     hintText: 'Search stocks by name or symbol...',
                     hintStyle: GoogleFonts.poppins(color: AppColors.grey600),
                     prefixIcon: Icon(Icons.search, color: AppColors.orange500),
-                    suffixIcon: Icon(Icons.tune, color: AppColors.orange500),
+                    suffixIcon: _searchController.text.isNotEmpty
+                        ? GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _searchController.clear();
+                                _searchResults.clear();
+                                _isSearching = false;
+                              });
+                            },
+                            child: Icon(Icons.close, color: AppColors.orange500),
+                          )
+                        : null,
                     filled: true,
                     fillColor: Colors.white,
                     border: OutlineInputBorder(
@@ -155,7 +172,19 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       borderSide: BorderSide(color: AppColors.orange500, width: 2),
                     ),
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      if (value.isEmpty) {
+                        _searchResults.clear();
+                        _isSearching = false;
+                      }
+                      _isSearching = true;
+                    });
+                  },
                   onSubmitted: (query) {
+                    setState(() {
+                      _isSearching = false;
+                    });
                     if (query.isNotEmpty) {
                       _fetchStocks(query); // Call API when search button is pressed
                     }
@@ -222,7 +251,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                   ),
                 )
               else if (_isSearching)
-                Center(child: CircularProgressIndicator())
+                SizedBox(height: 20)
               else
                 Expanded(
                   child: ListView.separated(

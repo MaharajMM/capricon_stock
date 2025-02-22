@@ -15,7 +15,7 @@ import 'package:capricon_stock/features/home/view/home_page.dart' as _i2;
 import 'package:capricon_stock/features/login/view/login_page.dart' as _i3;
 import 'package:capricon_stock/features/stocks_details/view/stocks_details_page.dart'
     as _i4;
-import 'package:flutter/widgets.dart' as _i6;
+import 'package:flutter/material.dart' as _i6;
 
 /// generated route for
 /// [_i1.CounterPage]
@@ -83,12 +83,14 @@ class StocksDetailsRoute extends _i5.PageRouteInfo<StocksDetailsRouteArgs> {
   StocksDetailsRoute({
     _i6.Key? key,
     required int stockId,
+    String? stockImageUrl,
     List<_i5.PageRouteInfo>? children,
   }) : super(
           StocksDetailsRoute.name,
           args: StocksDetailsRouteArgs(
             key: key,
             stockId: stockId,
+            stockImageUrl: stockImageUrl,
           ),
           initialChildren: children,
         );
@@ -102,6 +104,7 @@ class StocksDetailsRoute extends _i5.PageRouteInfo<StocksDetailsRouteArgs> {
       return _i4.StocksDetailsPage(
         key: args.key,
         stockId: args.stockId,
+        stockImageUrl: args.stockImageUrl,
       );
     },
   );
@@ -111,14 +114,17 @@ class StocksDetailsRouteArgs {
   const StocksDetailsRouteArgs({
     this.key,
     required this.stockId,
+    this.stockImageUrl,
   });
 
   final _i6.Key? key;
 
   final int stockId;
 
+  final String? stockImageUrl;
+
   @override
   String toString() {
-    return 'StocksDetailsRouteArgs{key: $key, stockId: $stockId}';
+    return 'StocksDetailsRouteArgs{key: $key, stockId: $stockId, stockImageUrl: $stockImageUrl}';
   }
 }
