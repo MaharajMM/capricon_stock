@@ -38,12 +38,14 @@ class _HomeViewState extends ConsumerState<HomeView> {
   bool _isSearching = false;
   late BuildContext? loadingStocksdialogContext;
 
+  /// Fetches stocks based on the search query
   void _fetchStocks(String query) {
     HapticFeedback.lightImpact();
     Feedback.forTap(context);
     ref.read(searchStockProvider.notifier).searchstock(
           query: query,
           onGettingStock: (stockListModel) {
+            // Close loading dialog when search is complete
             if (loadingStocksdialogContext != null) {
               Navigator.of(loadingStocksdialogContext!).pop();
             }
@@ -57,16 +59,19 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   @override
   void dispose() {
+    // Dispose the search controller to free memory
     _searchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Listen for stock search state changes (loading, error, success)
     ref.listen(
       searchStockProvider,
       (previous, next) {
         if (next.value is SearchingStockState) {
+          // Show loading dialog
           showDialog(
             context: context,
             barrierDismissible: true,
@@ -79,8 +84,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: SizedBox(
-                    height: 100, // Set height as needed
-                    width: 50, // Set width to 50
+                    height: 100,
+                    width: 50,
                     child: Center(
                       child: CircularProgressIndicator.adaptive(
                         valueColor: AlwaysStoppedAnimation(AppColors.orange500),
@@ -92,6 +97,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
             },
           );
         } else if (next.value is SearchStockErrorState) {
+          // Dismiss dialog and show error message
           Navigator.of(loadingStocksdialogContext!).pop();
           Utilities.flushBarErrorMessage(
               message: 'Something wet wrong. Please try late', context: context);
@@ -105,7 +111,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // App Bar with Welcome Message
+              /// 🏆 **Header Section (Welcome Text)**
               Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Row(
@@ -133,7 +139,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
               ),
               12.heightBox,
 
-              // Search Bar
+              /// 🔍 **Search Bar**
               Container(
                 decoration: BoxDecoration(
                   boxShadow: [
@@ -198,7 +204,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 ),
               ),
 
-              // Main Content Area (when not searching)
+              /// 📌 **Main Content (Stock Listings & Categories)**
               if (!_isSearching && _searchResults.isEmpty)
                 Expanded(
                   child: SingleChildScrollView(
@@ -207,7 +213,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       children: [
                         const SizedBox(height: 20),
 
-                        // Quick Categories
+                        /// 🔥 **Popular Categories**
                         AppText(
                           text: 'Popular Categories',
                           fontSize: 18,
@@ -228,7 +234,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
                         const SizedBox(height: 32),
 
-                        // Market Insights
+                        /// 📊 **Market Insights**
                         AppText(
                           text: 'Market Insights',
                           fontSize: 18,
@@ -259,14 +265,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
               else if (_isSearching)
                 SizedBox(height: 20)
               else
+
+                /// 📌 **Stock Search Results**
                 Expanded(
                   child: ListView.separated(
                     itemCount: _searchResults.length,
                     padding: EdgeInsets.only(bottom: 20, top: 8),
                     itemBuilder: (context, index) {
                       final stockItem = _searchResults[index];
-                      // Your search results list item widget
-                      return StockListItem(stock: stockItem); // Replace with your stock list item
+                      return StockListItem(stock: stockItem);
                     },
                     separatorBuilder: (context, index) => 12.heightBox,
                   ).pOnly(top: 20),

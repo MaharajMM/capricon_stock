@@ -60,6 +60,7 @@ class StocksDetailsView extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Consumer(
           builder: (context, ref, child) {
+            // Fetch stock details using Riverpod provider
             final stockDetailsAsync = ref.watch(stocksDetailsProvider(stockId));
             return stockDetailsAsync.easyWhen(
               data: (stockDetailsModel) {
@@ -68,6 +69,8 @@ class StocksDetailsView extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      /// **Stock Overview Section**
+                      /// Displays stock price, name, symbol, and price change indicator.
                       CompanyNamePriceCard(
                         changePercent: stockDetailsModel.changePercent,
                         isPositive: isPositive,
@@ -77,13 +80,20 @@ class StocksDetailsView extends StatelessWidget {
                         imageUrl: stockDetailsModel.image?.url ?? stockImageUrl,
                       ),
                       SizedBox(height: 20),
-                      // Chart Section
+
+                      /// **Stock Chart Section**
+                      /// Displays a historical price chart of the stock.
                       ChartCard(stockId: stockDetailsModel.id!),
                       SizedBox(height: 20),
-                      // Stock Info Cards
+
+                      /// **Company Details Section**
+                      /// Shows company-related information.
                       CompanyDetailsCard(company: stockDetailsModel),
 
                       SizedBox(height: 20),
+
+                      /// **Stock Metrics Section**
+                      /// Displays additional stock details like market cap and exchange.
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,

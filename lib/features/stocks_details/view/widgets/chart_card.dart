@@ -20,6 +20,16 @@ class _ChartCardState extends ConsumerState<ChartCard> {
   String selectedTimeframe = '1D';
   List<String> timeframes = ['1D', '1W', '1M', '1Y', '5Y'];
 
+  @override
+  void initState() {
+    super.initState();
+    // Fetch initial stock price data
+    _fetchStockPriceGraph(selectedTimeframe, widget.stockId);
+  }
+
+  /// Fetches stock price graph data based on the selected timeframe.
+  /// Handles API errors such as HTTP 500 and displays an error message.
+
   void _fetchStockPriceGraph(String range, int stockId) {
     ref.read(stockPriceGraphProvider.notifier).getStockPriceGraph(
           range: range,

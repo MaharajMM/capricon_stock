@@ -36,29 +36,38 @@ class LoginView extends ConsumerStatefulWidget {
 
 class _LoginViewState extends ConsumerState<LoginView> {
   final _loginFormKey = GlobalKey<FormBuilderState>();
+
+  /// Handles the login process when the user submits the form.
   void login() {
+    // Validate the form
     if (_loginFormKey.currentState?.validate() ?? false) {
-      HapticFeedback.lightImpact();
+      HapticFeedback.lightImpact(); // Provide subtle feedback on button press
       Feedback.forTap(context);
+
+      // Extract values from form fields
       final fields = _loginFormKey.currentState!.fields;
       final username = fields[LoginKeys.userName]!.value as String;
       final password = fields[LoginKeys.password]!.value as String;
 
+      // Trigger the login process via Riverpod provider
       ref.read(loginProvider.notifier).loginUser(
             userName: username,
             passWord: password,
             onLoginVerified: () {
+              // Show success toast and navigate to home screen on successful login
               context.showToast(msg: 'Success', bgColor: AppColors.kSuccessColor.withOpacity(0.8));
               context.router.replaceAll([const HomeRoute()]);
             },
           );
     } else {
-      return Utilities.flushBarErrorMessage(message: "Not validated", context: context);
+      // Show error message if validation fails
+      Utilities.flushBarErrorMessage(message: "Not validated", context: context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    // Listen for login state changes and show error messages if login fails
     ref.listen(
       loginProvider,
       (previous, next) {
@@ -91,8 +100,12 @@ class _LoginViewState extends ConsumerState<LoginView> {
           ),
 
           40.heightBox,
+
+          /// **Login Illustration**
           SvgPicture.asset(R.ASSETS_IMAGES_LOGIN_SVG),
           40.heightBox,
+
+          /// **Login Form**
           Expanded(
             child: ListView(
               primary: false,
@@ -102,6 +115,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   key: _loginFormKey,
                   child: Column(
                     children: [
+                      /// **Username Field**
                       CustomTextFormField(
                         labelText: 'Username',
                         hintText: 'Username',
@@ -111,6 +125,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
                         ]),
                       ),
                       20.heightBox,
+
+                      /// **Password Field**
                       CustomTextFormField(
                         textInputAction: TextInputAction.done,
                         labelText: 'Password',
@@ -129,6 +145,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   ),
                 ),
                 20.heightBox,
+
+                /// **Login Button**
                 LoginButton(onLogin: login).pOnly(left: 24, right: 24),
               ],
             ),

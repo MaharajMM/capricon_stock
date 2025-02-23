@@ -21,7 +21,6 @@ class StockListItem extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 12),
       child: Container(
-        // margin: EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
