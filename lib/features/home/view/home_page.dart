@@ -5,6 +5,7 @@ import 'package:capricon_stock/features/home/controller/home_pod.dart';
 import 'package:capricon_stock/features/home/state/stock_state.dart';
 import 'package:capricon_stock/features/home/view/widgets/category_card.dart';
 import 'package:capricon_stock/features/home/view/widgets/insight_card.dart';
+import 'package:capricon_stock/features/home/view/widgets/log_out_btn.dart';
 import 'package:capricon_stock/features/home/view/widgets/stock_list_item_card.dart';
 import 'package:capricon_stock/shared/utilities/utilites.dart';
 import 'package:capricon_stock/shared/widget/text/app_text.dart';
@@ -106,21 +107,27 @@ class _HomeViewState extends ConsumerState<HomeView> {
             children: [
               // App Bar with Welcome Message
               Padding(
-                padding: const EdgeInsets.only(top: 20.0, left: 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    AppText(
-                      text: 'Welcome back,',
-                      fontSize: 16,
-                      color: AppColors.grey600,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText(
+                          text: 'Welcome back,',
+                          fontSize: 16,
+                          color: AppColors.grey600,
+                        ),
+                        const SizedBox(height: 4),
+                        AppText(
+                          text: 'Find Your Perfect Stock',
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 4),
-                    AppText(
-                      text: 'Find Your Perfect Stock',
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    LogOutBtn(),
                   ],
                 ),
               ),
